@@ -1,0 +1,60 @@
+# Build-In Predicate Factories
+
+# 1. The After Route Predicate Factory
+#spring.cloud.gateway.routes[0].id=after_route
+#spring.cloud.gateway.routes[0].uri=https://example.org
+#spring.cloud.gateway.routes[0].predicates[0]=After=2017-01-20T17:42:47.789-07:00[America/Denver]
+
+# 2. The Before Route Predicate Factory
+#spring.cloud.gateway.routes[0].id = before_route
+#spring.cloud.gateway.routes[0].uri = https://example.org
+#spring.cloud.gateway.routes[0].predicates[0] = Before=2017-01-20T17:42:47.789-07:00[America/Denver]
+
+# 3. The Between Route Predicate Factory
+#spring.cloud.gateway.routes[0].id = between_route
+#spring.cloud.gateway.routes[0].uri = https://example.org
+#spring.cloud.gateway.routes[0].predicates[0] = Between=2017-01-20T17:42:47.789-07:00[America/Denver], 2017-01-21T17:42:47.789-07:00[America/Denver]
+
+# 4. The Cookie Route Predicate Factory
+#spring.cloud.gateway.routes[0].id = cookie_route
+#spring.cloud.gateway.routes[0].uri = https://example.org
+#spring.cloud.gateway.routes[0].predicates[0] = Cookie=chocolate, ch.p
+
+# 5. The Header Route Predicate Factory
+#spring.cloud.gateway.routes[0].id = header_route
+#spring.cloud.gateway.routes[0].uri = https://example.org
+#spring.cloud.gateway.routes[0].predicates[0] = Header=X-Request-Id, \d+
+
+# 6. The Host Route Predicate Factory
+#spring.cloud.gateway.routes[0].id = host_route
+#spring.cloud.gateway.routes[0].uri = https://example.org
+#spring.cloud.gateway.routes[0].predicates[0] = Host=**.somehost.org,**.anotherhost.org
+
+# 7. The Method Route Predicate Factory
+#spring.cloud.gateway.routes[0].id = method_route
+#spring.cloud.gateway.routes[0].uri = https://example.org
+#spring.cloud.gateway.routes[0].predicates[0] = Method=GET,POST
+
+# 8. The Path Route Predicate Factory
+#spring.cloud.gateway.routes[0].id = path_route
+#spring.cloud.gateway.routes[0].uri = https://example.org
+#spring.cloud.gateway.routes[0].predicates[0] = Path=/red/{segment},/blue/{segment}
+
+# 9. The Query Route Predicate Factory
+#spring.cloud.gateway.routes[0].id = query_route
+#spring.cloud.gateway.routes[0].uri = https://example.org
+#spring.cloud.gateway.routes[0].predicates[0] = Query=green
+
+# 10. The RemoteAddr Route Predicate Factory
+#spring.cloud.gateway.routes[0].id = remoteaddress_route
+#spring.cloud.gateway.routes[0].uri = https://example.org
+#spring.cloud.gateway.routes[0].predicates[0] = RemoteAddr=192.168.1.1/24
+
+# 11. The Weight Route Predicate Factory
+#spring.cloud.gateway.routes[0].id = weight_high
+#spring.cloud.gateway.routes[0].uri = https://example.org
+#spring.cloud.gateway.routes[0].predicates[0] = Weight=group1, 8
+ 
+#spring.cloud.gateway.routes[1].id = weight_low
+#spring.cloud.gateway.routes[1].uri = https://example.org
+#spring.cloud.gateway.routes[1].predicates[0] = Weight=group1, 2
