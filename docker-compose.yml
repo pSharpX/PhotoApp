@@ -1,0 +1,127 @@
+version: "3.6"
+
+networks:
+  globant/in.production: {}
+  globant/production: {}
+
+secrets:
+  db_user:
+    file: ./docker/secrets/db_user
+  db_password:
+    file: ./docker/secrets/db_password
+  rmq_config:
+    file: ./docker/secrets/rmq_config
+  cd_api_key:
+    file: ./docker/secrets/cd_api_key
+  cd_api_secret:
+    file: ./docker/secrets/cd_api_secret
+  cd_cloud_name:
+    file: ./docker/secrets/cd_cloud_name
+
+services:
+#  db-postgres:
+#    image: 'postgres:13.1-alpine'
+#    container_name: photoapp_postgres_database
+#    hostname: ${DATABASE_HOSTNAME}
+#    secrets:
+#      - db_user
+#      - db_password
+#    labels:
+#      com.globant.photoapp.project: "PhotoApp"
+#      com.globant.photoapp.version: "1.0"
+#      com.globant.photoapp.author.name: "Christian Rivera"
+#      com.globant.photoapp.author.email: "crivera2093@gmail.com"
+#      com.globant.photoapp.author.url: "https://github.com/pSharpX"
+#      com.globant.photoapp.author.description: "PhotoApp Application"
+#    networks:
+#      - globant/in.production
+#    ports:
+#      - "5432:5432"
+#    environment:
+#      - POSTGRES_USER_FILE=/run/secrets/db_user
+#      - POSTGRES_PASSWORD_FILE=/run/secrets/db_password
+#      - POSTGRES_DB=${DATABASE_NAME}
+#    volumes:
+#      - ./data/db-scripts/:/docker-entrypoint-initdb.d/
+#      - ./data/db/:/var/lib/postgresql/data
+
+  db-mariadb:
+    image: 'mariadb:10.7.3'
+    container_name: photoapp_mariadb_database
+    hostname: ${DATABASE_HOSTNAME}
+    secrets:
+      - db_user
+      - db_password
+    labels:
+      com.globant.photoapp.project: "PhotoApp"
+      com.globant.photoapp.version: "1.0"
+      com.globant.photoapp.author.name: "Christian Rivera"
+      com.globant.photoapp.author.email: "crivera2093@gmail.com"
+      com.globant.photoapp.author.url: "https://github.com/pSharpX"
+      com.globant.photoapp.author.description: "PhotoApp Application"
+    networks:
+      - globant/in.production
+    ports:
+      - "3306:3306"
+    environment:
+      - MARIADB_USER_FILE=/run/secrets/db_user
+      - MARIADB_PASSWORD_PASSWORD_FILE=/run/secrets/db_password
+      - MARIADB_ROOT_PASSWORD_FILE=/run/secrets/db_password
+      - MARIADB_DATABASE=${DATABASE_NAME}
+    volumes:
+      - ./data/db-scripts/:/docker-entrypoint-initdb.d/
+      - ./data/db/:/var/lib/mysql
+
+  rabbitmq-server:
+    image: 'rabbitmq:3.9.14-management-alpine'
+    #docker pull rabbitmq:3.9.14-alpine
+    container_name: photoapp_bus
+    hostname: ${BUS_HOSTNAME}
+    secrets:
+      - rmq_config
+    labels:
+      com.globant.photoapp.project: "PhotoApp"
+      com.globant.photoapp.version: "1.0"
+      com.globant.photoapp.author.name: "Christian Rivera"
+      com.globant.photoapp.author.email: "crivera2093@gmail.com"
+      com.globant.photoapp.author.url: "https://github.com/pSharpX"
+      com.globant.photoapp.author.description: "PhotoApp Application"
+    networks:
+      - globant/in.production
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_CONF_ENV_FILE=/run/secrets/rmq_config
+    volumes:
+      - ./data/rabbitmq-db/:/var/lib/rabbitmq
+
+#  app:
+#    build:
+#      context: ./
+#      dockerfile: Dockerfile
+#    image: psharpx/photoapp-api:${TAG}
+#    container_name: api_photoapp
+#    hostname: ${API_HOSTNAME}
+#    networks:
+#      - globant/in.production
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - db
+#    restart: always
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=prod
+#      - DATABASE_HOSTNAME=${DATABASE_HOSTNAME}
+#      - DATABASE_PORT=${DATABASE_PORT}
+#      - DATABASE_NAME=${DATABASE_NAME}
+#      - SPRING_DATASOURCE_USERNAME=${DATABASE_USER}
+#      - SPRING_DATASOURCE_PASSWORD=${DATABASE_PASSWORD}
+#      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+#    labels:
+#      com.globant.photoapp.project: "PhotoApp"
+#      com.globant.photoapp.version: "1.0"
+#      com.globant.photoapp.author.name: "Christian Rivera"
+#      com.globant.photoapp.author.email: "crivera2093@gmail.com"
+#      com.globant.photoapp.author.url: "https://github.com/pSharpX"
+#      com.globant.photoapp.author.description: "PhotoApp Application"
