@@ -23,7 +23,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     private Environment environment;
 
     public WebSecurity(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder,
-    Environment environment){
+                       Environment environment) {
         this.userService = userService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.environment = environment;
@@ -32,9 +32,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http.csrf().disable();
-        http.authorizeRequests().antMatchers("/users/**").permitAll()
-        .and()
-        .addFilter(getAuthenticationFilter());
+        http.authorizeRequests()
+                .antMatchers("/users/**").permitAll()
+                .and()
+                .addFilter(getAuthenticationFilter());
         http.headers().frameOptions().disable();
     }
 
@@ -45,7 +46,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     private Filter getAuthenticationFilter() throws Exception {
         AuthenticationFilter filter = new AuthenticationFilter(this.userService, this.environment, this.authenticationManager());
+        filter.setFilterProcessesUrl(this.environment.getProperty("login.url.path"));
         return filter;
     }
-    
+
 }
