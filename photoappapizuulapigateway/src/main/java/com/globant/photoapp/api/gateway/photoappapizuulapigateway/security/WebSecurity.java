@@ -24,14 +24,16 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().disable();
 
         http.authorizeRequests()
-            .antMatchers(HttpMethod.POST, this.environment.getProperty("api.login.url.path")).permitAll()
-            .antMatchers(HttpMethod.POST, this.environment.getProperty("api.registration.url.path")).permitAll()
-            .antMatchers(this.environment.getProperty("api.h2console.url.path")).permitAll()
-            .anyRequest().authenticated()
-        .and()
-            .addFilter(new AuthorizationFilter(authenticationManager(), this.environment));
+                .antMatchers(this.environment.getProperty("api.zuul.actuator.url.path")).permitAll()
+                .antMatchers(this.environment.getProperty("api.users.actuator.url.path")).permitAll()
+                .antMatchers(HttpMethod.POST, this.environment.getProperty("api.login.url.path")).permitAll()
+                .antMatchers(HttpMethod.POST, this.environment.getProperty("api.registration.url.path")).permitAll()
+                .antMatchers(this.environment.getProperty("api.h2console.url.path")).permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .addFilter(new AuthorizationFilter(authenticationManager(), this.environment));
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
-    
+
 }
