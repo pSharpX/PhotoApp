@@ -1,7 +1,9 @@
 package com.globant.photoapp.api.users.photoappapiusers.shared;
 
 import java.io.Serializable;
+import java.util.List;
 
+import com.globant.photoapp.api.users.photoappapiusers.models.AlbumResponseModel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,5 +24,7 @@ public class UserDto implements Serializable {
     private String email;
 
     private String userId;
+
+    private List<AlbumResponseModel> albums;
 
 }
